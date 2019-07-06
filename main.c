@@ -2,15 +2,29 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+typedef struct Player{
+    int x_pos;
+    int y_pos;
+    int health;
+} Player_t;
+
 // function prototypes
 void set_up_screen();
 void set_up_map();
+Player_t* set_up_player();
 
 int
 main(int argc, char** argv){
+    Player_t *player;
     set_up_screen();
     set_up_map();
-    getch();
+    int ch;
+
+    player = set_up_player();
+
+    while ((ch = getch()) != 'q'){
+
+    }
     endwin(); // stop ncurses
     return 0;
 }
@@ -18,7 +32,6 @@ main(int argc, char** argv){
 void
 set_up_screen(){
     initscr();
-    printw("Hello World");
     noecho(); // stops keyboard input from being visible on the screen
     refresh();
 }
@@ -45,4 +58,19 @@ set_up_map(){
     mvprintw(13, 40, "|----------|");
     mvprintw(14, 40, "|----------|");
     mvprintw(15, 40, "------------");
+}
+
+Player_t*
+set_up_player(){
+    Player_t* player;
+    player = malloc(sizeof(*player));
+
+    player->x_pos = 14;
+    player->y_pos = 14;
+    player->health = 20;
+
+    mvprintw(player->y_pos, player->x_pos, "@");
+    move(player->y_pos, player->x_pos); // moves the cursor to the player's position
+    return player;
+
 }
